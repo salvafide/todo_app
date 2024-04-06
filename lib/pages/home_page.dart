@@ -1,3 +1,7 @@
+// ignore_for_file: sort_child_properties_last
+
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_app/data/database.dart';
@@ -73,6 +77,63 @@ class _HomePageState extends State<HomePage> {
     });
     db.updateDataBase();
   }
+  
+  // This function is called when reordering tiles
+  void updateOrdering(int oldIndex, int newIndex){
+    setState(() {
+      // fix index when moving tile down list
+      if (oldIndex  < newIndex) newIndex--;
+      // get the tile that is moving
+      final tile = db.toDoList.removeAt(oldIndex);
+      // place tile in new index
+      db.toDoList.insert(newIndex, tile);
+    });
+    db.updateDataBase();
+  }
+
+  // This widget is created when reordering list
+  Widget proxyDecorator(
+      Widget child, int index, Animation<double> animation) {
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (BuildContext context, Widget? child) {
+        final double animValue = Curves.easeInOut.transform(animation.value);
+        final double elevation = lerpDouble(1, 6, animValue)!;
+        final double scale = lerpDouble(1, 1.02, animValue)!;
+        return Transform.scale(
+          scale: scale,
+          // Create a Card based on the color and the content of the dragged one
+          // and set its elevation to the animated value.
+          child: Material(
+              child: Container(
+                  decoration: BoxDecoration(
+                  color : Colors.yellow[500],
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                height: 120,
+                  child : Row(
+                  children: [
+                    //Checkbox
+                    Checkbox(
+                      value: db.toDoList[index][1], 
+                      onChanged: (value) => checkBoxChanged(value, index),
+                      activeColor: Colors.black,
+                    ),
+                    // Task Name
+                    Flexible(
+                      child: Text(
+                        db.toDoList[index][0],
+                        style: TextStyle(decoration: db.toDoList[index][1] ? TextDecoration.lineThrough : TextDecoration.none)
+                      ),
+                    ),
+                  ],
+                ),
+              )
+          )
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,16 +150,20 @@ class _HomePageState extends State<HomePage> {
         child: Icon(Icons.add),
         backgroundColor: Colors.yellow[500],
       ),
-      body: ListView.builder(
-        itemCount: db.toDoList.length,
-        itemBuilder: (context, index){
-          return TodoTile(
-            taskName: db.toDoList[index][0],
-            taskCompleted: db.toDoList[index][1],
-            onChanged: (value) => checkBoxChanged(value, index),
-            deleteFunction: (context) => deleteTask(index),
-          );
-        }
+      body: ReorderableListView(
+        //buildDefaultDragHandles:false,
+        proxyDecorator: proxyDecorator,
+        children: [
+          for (int index = 0; index < db.toDoList.length; index++)
+            TodoTile(
+              key: ValueKey(index),
+              taskName: db.toDoList[index][0], 
+              taskCompleted: db.toDoList[index][1], 
+              onChanged: (value) => checkBoxChanged(value, index), 
+              deleteFunction: (context) => deleteTask(index),
+            )
+        ],
+        onReorder: ((oldIndex, newIndex) => updateOrdering(oldIndex, newIndex)),
       ),
     );
   }

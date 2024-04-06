@@ -30,7 +30,7 @@ class TodoTile extends StatelessWidget {
               onPressed: editFunction,
               icon: Icons.edit,
               backgroundColor: Colors.green,
-               borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(6),
             ),
             SlidableAction( // Delete 
               onPressed: deleteFunction,
