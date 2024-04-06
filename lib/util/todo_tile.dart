@@ -21,7 +21,7 @@ class TodoTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 24.0, right: 24, top: 24),
+      padding: const EdgeInsets.only(left: 24.0, right: 24, top: 7, bottom: 7),
       child: Slidable(
         endActionPane: ActionPane(
           motion: BehindMotion(),
@@ -41,7 +41,7 @@ class TodoTile extends StatelessWidget {
           ],
         ),
         child: Container(
-          padding: EdgeInsets.all(24),
+          padding: EdgeInsets.all(14),
           child : Row(
             children: [
               //Checkbox
@@ -53,6 +53,8 @@ class TodoTile extends StatelessWidget {
               // Task Name
               Flexible(
                 child: Text(
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                   taskName,
                   style: TextStyle(decoration: taskCompleted ? TextDecoration.lineThrough : TextDecoration.none)
                 ),

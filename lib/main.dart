@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'pages/home_page.dart';
@@ -5,6 +7,14 @@ import 'pages/home_page.dart';
 void main() async {
   // Init the hive
   await Hive.initFlutter();
+
+  // Set navbar overlay type
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  if (Platform.isAndroid) {
+      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.transparent,
+          systemNavigationBarIconBrightness: Brightness.light));
+    }
 
   // Open box
   var box = await Hive.openBox('myBox');

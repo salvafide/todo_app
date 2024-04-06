@@ -3,6 +3,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_app/data/database.dart';
 import 'package:todo_app/util/dialog_box.dart';
@@ -88,6 +89,7 @@ class _HomePageState extends State<HomePage> {
       // place tile in new index
       db.toDoList.insert(newIndex, tile);
     });
+    HapticFeedback.vibrate();
     db.updateDataBase();
   }
 
@@ -138,12 +140,19 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.yellow[200],
-      appBar: AppBar(
-        backgroundColor: Colors.yellow[500],
-        title: Text("TASKS"),
-        elevation: 0,
-        centerTitle: true,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(40),
+        child: AppBar(
+          backgroundColor: Colors.yellow[500],
+          title: Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: Text("TASKS"),
+          ),
+          elevation: 0,
+          centerTitle: true,
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: createNewTask,
@@ -151,8 +160,9 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.yellow[500],
       ),
       body: ReorderableListView(
-        //buildDefaultDragHandles:false,
+        padding: const EdgeInsets.only(top: 7, bottom: 7),
         proxyDecorator: proxyDecorator,
+        clipBehavior: Clip.hardEdge,
         children: [
           for (int index = 0; index < db.toDoList.length; index++)
             TodoTile(
@@ -163,6 +173,7 @@ class _HomePageState extends State<HomePage> {
               deleteFunction: (context) => deleteTask(index),
             )
         ],
+        onReorderStart: (int index) { HapticFeedback.heavyImpact();},
         onReorder: ((oldIndex, newIndex) => updateOrdering(oldIndex, newIndex)),
       ),
     );
