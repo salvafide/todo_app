@@ -25,4 +25,8 @@ class TaskDataBase {
   void updateDataBase(){
     _myBox.put("TASKS", toDoList);
   }
+
+  void updateElement(int index, String s){
+    toDoList[index][0] = s; 
+  }
 }

@@ -71,6 +71,14 @@ class _HomePageState extends State<HomePage> {
     );
   } 
 
+  // Edit task
+  void editTask(int index){
+    setState(() {
+      db.toDoList.removeAt(index);
+    });
+    db.updateDataBase();
+  }
+
   // Delete Task
   void deleteTask(int index) {
     setState(() {
@@ -109,7 +117,7 @@ class _HomePageState extends State<HomePage> {
           child: Material(
               child: Container(
                   decoration: BoxDecoration(
-                  color : Colors.yellow[500],
+                  color : Colors.yellow[600],
                   borderRadius: BorderRadius.circular(12),
                 ),
                 height: 120,
@@ -141,11 +149,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.yellow[200],
+      backgroundColor: Colors.yellow[100],
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(40),
         child: AppBar(
-          backgroundColor: Colors.yellow[500],
+          backgroundColor: Colors.yellow[600],
           title: Padding(
             padding: const EdgeInsets.only(bottom: 6),
             child: Text("TASKS"),
@@ -157,7 +165,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: createNewTask,
         child: Icon(Icons.add),
-        backgroundColor: Colors.yellow[500],
+        backgroundColor: Colors.yellow[600],
       ),
       body: ReorderableListView(
         padding: const EdgeInsets.only(top: 7, bottom: 7),
@@ -171,6 +179,7 @@ class _HomePageState extends State<HomePage> {
               taskCompleted: db.toDoList[index][1], 
               onChanged: (value) => checkBoxChanged(value, index), 
               deleteFunction: (context) => deleteTask(index),
+              //editFunction: (context) => EditTask(),
             )
         ],
         onReorderStart: (int index) { HapticFeedback.heavyImpact();},

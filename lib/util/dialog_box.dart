@@ -21,17 +21,28 @@ class DialogBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.0),
       ),
       content : Container(
-        height: 120,
+        height: 150,
+        width: 600,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             TextField(
               controller: textController,
               decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.black87, width: 2.0),
                 ),
-                hintText: "Add Task"
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(4),
+                  borderSide: const BorderSide(color: Colors.black87, width: 2.0),
+                ),
+                hintText: "Add Task",
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    textController.clear();
+                  },
+                icon: const Icon(Icons.clear),
+                )
               ),
             ),
             Row(
