@@ -71,14 +71,6 @@ class _HomePageState extends State<HomePage> {
     );
   } 
 
-  // Edit task
-  void editTask(int index){
-    setState(() {
-      db.toDoList.removeAt(index);
-    });
-    db.updateDataBase();
-  }
-
   // Delete Task
   void deleteTask(int index) {
     setState(() {
@@ -149,7 +141,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.yellow[100],
+      backgroundColor: Color.fromARGB(255, 245, 242, 234),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(40),
         child: AppBar(
@@ -179,7 +171,6 @@ class _HomePageState extends State<HomePage> {
               taskCompleted: db.toDoList[index][1], 
               onChanged: (value) => checkBoxChanged(value, index), 
               deleteFunction: (context) => deleteTask(index),
-              //editFunction: (context) => EditTask(),
             )
         ],
         onReorderStart: (int index) { HapticFeedback.heavyImpact();},

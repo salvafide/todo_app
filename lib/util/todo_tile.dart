@@ -8,7 +8,6 @@ class TodoTile extends StatelessWidget {
   final bool taskCompleted;
   Function(bool?)? onChanged;
   Function(BuildContext)? deleteFunction;  
-  Function(BuildContext)? editFunction;
 
   TodoTile({
     super.key, 
@@ -26,16 +25,11 @@ class TodoTile extends StatelessWidget {
         endActionPane: ActionPane(
           motion: BehindMotion(),
           children: [
-            SlidableAction( // Edit
-              onPressed: editFunction,
-              icon: Icons.edit,
-              backgroundColor: Colors.green,
-              borderRadius: BorderRadius.circular(6),
-            ),
             SlidableAction( // Delete 
               onPressed: deleteFunction,
               icon: Icons.delete,
-              backgroundColor: Colors.red.shade300,
+              backgroundColor: Colors.red.shade400,
+              //backgroundColor: Color.fromARGB(255, 117, 79, 30),
               borderRadius: BorderRadius.circular(6),
             ),
           ],

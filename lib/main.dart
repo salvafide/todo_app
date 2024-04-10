@@ -30,7 +30,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomePage(),
-      theme: ThemeData(primarySwatch: Colors.yellow)
+      theme: ThemeData(
+        primarySwatch: Colors.yellow,
+        dialogTheme: const DialogTheme(
+          backgroundColor:  Color.fromARGB(255, 245, 245, 245),
+          surfaceTintColor: Colors.yellow
+        ),
+      )
     );
   }
 }
